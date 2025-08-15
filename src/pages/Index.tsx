@@ -1,12 +1,48 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from 'react';
+import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import Benefits from '@/components/Benefits';
+import Portfolio from '@/components/Portfolio';
+import Testimonials from '@/components/Testimonials';
+import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const Index = () => {
+  useScrollReveal();
+
+  useEffect(() => {
+    // Smooth scrolling for anchor links
+    const handleClick = (e: Event) => {
+      const target = e.target as HTMLAnchorElement;
+      if (target.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const id = target.getAttribute('href')?.slice(1);
+        const element = document.getElementById(id || '');
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <Header />
+      <main>
+        <Hero />
+        <Benefits />
+        <Portfolio />
+        <Testimonials />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 };
